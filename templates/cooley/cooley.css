@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Cooley template — brand tokens and page chrome for pages with
+   `Template: cooley` metadata. Scoped to body.cooley so the rest of the site
+   keeps its own design system.
+   ========================================================================== */
+
+body.cooley {
+  --heading-font-family: "GT Sectra Book", garamond, "Times New Roman", serif;
+  --body-font-family: "Arial Nova", arial, helvetica, sans-serif;
+  --background-color: #fff;
+  --text-color: #33040e;
+  --link-color: #de0220;
+  --link-hover-color: #33040e;
+  --light-color: #f0f0f0;
+  --cooley-maroon: #3a030e;
+  --cooley-maroon-text: #fff2f4;
+  --cooley-red: #fd1434;
+  --body-font-size-m: 20px;
+  --body-font-size-s: 18px;
+  --body-font-size-xs: 16px;
+  --heading-line-height: 1.1;
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 34px;
+
+  background-color: var(--background-color);
+  background-image: none;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+}
+
+@media (width >= 900px) {
+  body.cooley {
+    --heading-font-size-xxl: 44px;
+    --heading-font-size-xl: 44px;
+  }
+}
+
+/* No color here: headings inherit --text-color from body.cooley, and a color
+   at this specificity would override block accents (e.g. columns-sticky red). */
+.cooley main :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.cooley main a:any-link {
+  color: var(--link-color);
+}
+
+.cooley main a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Hero band — the first section carries the page H1 over Cooley maroon. */
+.cooley main > .section:first-child {
+  padding-block: 88px;
+  background-color: var(--cooley-maroon);
+}
+
+.cooley main > .section:first-child h1 {
+  margin: 0;
+  color: var(--cooley-maroon-text);
+  text-align: center;
+}
+
+/* Grey legal/disclaimer band (section-metadata style: grey). */
+.cooley main .section.grey {
+  margin: 0;
+  padding-block: 40px;
+  background-color: var(--light-color);
+}
+
+.cooley main .section.grey p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555;
+}
