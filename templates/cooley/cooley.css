@@ -3,6 +3,8 @@
    `Template: cooley` metadata. Scoped to body.cooley so the rest of the site
    keeps its own design system.
    ========================================================================== */
+/* stylelint-disable no-descending-specificity -- header, footer, and main rules target
+   different elements; grouping by region reads better than sorting by specificity */
 
 body.cooley {
   --heading-font-family: "GT Sectra Book", garamond, "Times New Roman", serif;
@@ -21,6 +23,8 @@ body.cooley {
   --heading-line-height: 1.1;
   --heading-font-size-xxl: 36px;
   --heading-font-size-xl: 34px;
+  --nav-height: 80px;
+  --header-height: var(--nav-height);
 
   background-color: var(--background-color);
   background-image: none;
@@ -32,6 +36,7 @@ body.cooley {
   body.cooley {
     --heading-font-size-xxl: 44px;
     --heading-font-size-xl: 44px;
+    --nav-height: 108px;
   }
 }
 
@@ -73,4 +78,410 @@ body.cooley {
   font-size: 13px;
   line-height: 1.5;
   color: #555;
+}
+
+/* ==========================================================================
+   Icons — the SVGs use currentColor, which <img> can't inherit, so render
+   them as masks painted with the element's text color.
+   ========================================================================== */
+
+.cooley :is(header, footer) .icon:is(
+  .icon-cooley-logo, .icon-search, .icon-linkedin, .icon-x, .icon-instagram, .icon-facebook
+) {
+  display: inline-block;
+  background-color: currentcolor;
+  mask: var(--cooley-icon) center / contain no-repeat;
+  filter: none;
+}
+
+.cooley :is(header, footer) .icon:is(
+  .icon-cooley-logo, .icon-search, .icon-linkedin, .icon-x, .icon-instagram, .icon-facebook
+) img {
+  visibility: hidden;
+}
+
+.cooley .icon-cooley-logo { --cooley-icon: url("/icons/cooley-logo.svg"); }
+.cooley .icon-search { --cooley-icon: url("/icons/search.svg"); }
+.cooley .icon-linkedin { --cooley-icon: url("/icons/linkedin.svg"); }
+.cooley .icon-x { --cooley-icon: url("/icons/x.svg"); }
+.cooley .icon-instagram { --cooley-icon: url("/icons/instagram.svg"); }
+.cooley .icon-facebook { --cooley-icon: url("/icons/facebook.svg"); }
+
+/* ==========================================================================
+   Header — logo left, search + menu icons right; the menu opens as a red
+   panel from the right on every viewport (as on cooley.com).
+   ========================================================================== */
+
+.cooley header .nav-wrapper {
+  background-color: #fff;
+  border-bottom: 0;
+}
+
+.cooley header nav,
+.cooley header nav[aria-expanded='true'] {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: none;
+  min-height: var(--nav-height);
+  padding: 0 16px;
+  overflow: visible;
+  color: var(--cooley-red);
+}
+
+.cooley header .nav-brand {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+  font-size: 0;
+}
+
+.cooley header nav .nav-brand a:any-link {
+  color: var(--cooley-red);
+}
+
+.cooley header .nav-brand .icon-cooley-logo {
+  width: 110px;
+  height: 37px;
+}
+
+.cooley header nav .nav-tools {
+  order: 1;
+  margin-left: auto;
+}
+
+/* Hide demo-only header tools that have no Cooley equivalent. */
+.cooley header nav .nav-tools a.button.nav-auth-link:any-link,
+.cooley header nav .nav-sections .default-content-wrapper > ul > li.nav-auth-mobile-item,
+.cooley header nav .nav-tools .nav-search-input {
+  display: none;
+}
+
+.cooley header nav .nav-tools .nav-search-submit {
+  display: flex;
+  border: 0;
+  padding: 4px;
+  background: transparent;
+  color: var(--cooley-red);
+  cursor: pointer;
+}
+
+.cooley header nav .nav-tools .nav-search-submit .icon-search {
+  width: 26px;
+  height: 26px;
+}
+
+.cooley header nav .nav-hamburger,
+.cooley header nav[aria-expanded='true'] .nav-hamburger {
+  order: 2;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  visibility: visible;
+  height: 32px;
+}
+
+.cooley header nav .nav-hamburger button {
+  height: 32px;
+  color: var(--cooley-red);
+}
+
+.cooley header nav[aria-expanded='true'] .nav-hamburger button {
+  color: var(--text-color);
+}
+
+/* Two-line menu icon (closed); the demo's X is kept for the open state. */
+.cooley header nav[aria-expanded='false'] .nav-hamburger-icon {
+  width: 24px;
+  background: transparent;
+}
+
+.cooley header nav[aria-expanded='false'] .nav-hamburger-icon::before,
+.cooley header nav[aria-expanded='false'] .nav-hamburger-icon::after {
+  width: 24px;
+}
+
+.cooley header nav[aria-expanded='false'] .nav-hamburger-icon::before {
+  top: -4px;
+}
+
+.cooley header nav[aria-expanded='false'] .nav-hamburger-icon::after {
+  top: 4px;
+}
+
+.cooley header nav[aria-expanded='true'] .nav-hamburger-icon::before,
+.cooley header nav[aria-expanded='true'] .nav-hamburger-icon::after {
+  height: 30px;
+}
+
+.cooley header nav .nav-sections,
+.cooley header nav[aria-expanded='true'] .nav-sections {
+  display: none;
+  visibility: hidden;
+}
+
+.cooley header nav[aria-expanded='true'] .nav-sections {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 1;
+  display: block;
+  visibility: visible;
+
+  /* The demo sets align-self: start, which makes a fixed box shrink to its
+     content instead of spanning top to bottom. */
+  align-self: stretch;
+  width: 100%;
+  max-height: none;
+  box-sizing: border-box;
+  padding: 24px 24px 40px;
+  text-align: start;
+  overflow-y: auto;
+  background-color: var(--cooley-red);
+  white-space: normal;
+}
+
+.cooley header nav .nav-sections .default-content-wrapper > ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.cooley header nav .nav-sections .default-content-wrapper > ul > li {
+  display: block;
+  border: 0;
+  padding: 0;
+  text-align: start;
+}
+
+.cooley header nav .nav-sections .default-content-wrapper > ul > li :is(a, p > a):any-link {
+  display: inline-block;
+  padding: 0;
+  letter-spacing: normal;
+  text-decoration: none;
+  text-transform: none;
+}
+
+/* Main navigation: large cream serif links. */
+.cooley header nav .nav-sections .default-content-wrapper > ul:first-child > li :is(a, p > a):any-link {
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--cooley-maroon-text);
+}
+
+/* Utility navigation: small maroon sans links. */
+.cooley header nav .nav-sections .default-content-wrapper > ul + ul {
+  margin-top: 24px;
+}
+
+.cooley header nav .nav-sections .default-content-wrapper > ul + ul > li :is(a, p > a):any-link {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--text-color);
+}
+
+.cooley header nav .nav-sections .default-content-wrapper > ul > li :is(a, p > a):any-link:hover {
+  color: var(--text-color);
+  text-decoration: underline;
+}
+
+@media (width >= 600px) {
+  .cooley header nav[aria-expanded='true'] .nav-sections {
+    width: 50%;
+    max-width: 720px;
+  }
+}
+
+@media (width >= 900px) {
+  .cooley header nav,
+  .cooley header nav[aria-expanded='true'] {
+    padding: 0 32px;
+  }
+
+  .cooley header nav .nav-sections .default-content-wrapper > ul:first-child > li :is(a, p > a):any-link {
+    font-size: 44px;
+  }
+}
+
+/* ==========================================================================
+   Footer — red "alerts" sign-up band, then the maroon footer with logo,
+   three-column link list, social icons, and copyright.
+   Sections: 1 = alerts, 2 = logo + links, 3 = social + copyright.
+   ========================================================================== */
+
+.cooley footer {
+  border-top: 0;
+  background-color: var(--cooley-maroon);
+  color: var(--cooley-maroon-text);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+}
+
+.cooley footer .footer > div {
+  max-width: none;
+  padding: 0;
+  text-align: start;
+}
+
+/* `> div > .section` outranks the demo's `.section:nth-child(n)` row rules. */
+.cooley footer .footer > div > .section {
+  margin: 0;
+  border: 0;
+  padding: 32px 16px;
+}
+
+.cooley footer .footer .section > .default-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cooley footer .footer a:any-link {
+  color: var(--cooley-maroon-text);
+  text-decoration: none;
+}
+
+.cooley footer .footer a:any-link:hover {
+  color: var(--cooley-maroon-text);
+  text-decoration: underline;
+}
+
+/* 1: alerts band */
+.cooley footer .footer .section:first-child {
+  background-color: var(--cooley-red);
+  color: var(--text-color);
+}
+
+.cooley footer .footer .section:first-child .default-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cooley footer .footer .section:first-child h2 {
+  max-width: 12em;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--text-color);
+}
+
+.cooley footer .footer .section:first-child a:any-link {
+  display: inline-block;
+  min-width: 183px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0;
+  padding: 12px 24px;
+  background: var(--text-color);
+  box-shadow: none;
+  color: var(--cooley-red);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: none;
+}
+
+/* The logo is the only link in its paragraph, so the demo decorates it as a
+   button; strip that back to the bare logo. */
+.cooley footer .footer .section:nth-child(2) p a:any-link {
+  display: inline-flex;
+  border: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 0;
+}
+
+/* 2: logo + link list */
+.cooley footer .footer .section:nth-child(2) p {
+  font-family: inherit;
+  font-size: 0;
+  opacity: 1;
+  margin: 0 0 32px;
+}
+
+.cooley footer .footer .section:nth-child(2) .icon-cooley-logo {
+  width: 110px;
+  height: 37px;
+  margin: 0;
+  color: var(--cooley-maroon-text);
+}
+
+.cooley footer .footer .section:nth-child(2) ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cooley footer .footer .section:nth-child(2) li::before {
+  content: '|';
+  margin-right: 16px;
+  font-weight: 700;
+}
+
+/* 3: social + copyright */
+.cooley footer .footer .section:nth-child(3) {
+  padding-top: 0;
+}
+
+.cooley footer .footer .section:nth-child(3) .default-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+.cooley footer .footer .section:nth-child(3) ul {
+  gap: 16px;
+}
+
+.cooley footer .footer .section:nth-child(3) ul a {
+  display: inline-flex;
+  font-size: 0;
+  opacity: 1;
+}
+
+.cooley footer .footer .section:nth-child(3) .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.cooley footer .footer .section:nth-child(3) p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (width >= 600px) {
+  .cooley footer .footer .section:first-child .default-content-wrapper {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cooley footer .footer .section:first-child h2 {
+    font-size: 42px;
+  }
+
+  .cooley footer .footer .section:nth-child(2) ul {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+  }
+}
+
+@media (width >= 900px) {
+  .cooley footer .footer > div > .section {
+    padding-inline: 32px;
+  }
 }
