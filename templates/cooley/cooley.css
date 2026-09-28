@@ -6,8 +6,42 @@
 /* stylelint-disable no-descending-specificity -- header, footer, and main rules target
    different elements; grouping by region reads better than sorting by specificity */
 
+/* Cooley web fonts (fonts/cooley/), as cooley.com loads them: GT Sectra Book
+   for display (300) and GT Sectra Regular for link titles (400). */
+@font-face {
+  font-family: "GT Sectra";
+  src: url("/fonts/cooley/GT-Sectra-Book.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT Sectra";
+  src: url("/fonts/cooley/GT-Sectra-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arial Nova";
+  src: url("/fonts/cooley/ArialNovaRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arial Nova";
+  src: url("/fonts/cooley/ArialNovaBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 body.cooley {
-  --heading-font-family: "GT Sectra Book", garamond, "Times New Roman", serif;
+  --heading-font-family: "GT Sectra", garamond, "Times New Roman", serif;
   --body-font-family: "Arial Nova", arial, helvetica, sans-serif;
   --background-color: #fff;
   --text-color: #33040e;
@@ -53,6 +87,31 @@ body.cooley {
 
 .cooley main a:hover {
   color: var(--link-hover-color);
+}
+
+/* Buttons (e.g. "View all") — Cooley's flat violet .btn. */
+.cooley main a.button:any-link {
+  display: inline-flex;
+  border: 0;
+  border-radius: 0;
+  padding: 12px 24px;
+  background: #5a46ff;
+  box-shadow: none;
+  color: #e6eaff;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.cooley main a.button:any-link:hover,
+.cooley main a.button:any-link:focus-visible {
+  background: var(--text-color);
+  color: #e6eaff;
+  text-decoration: none;
 }
 
 /* Hero band — the first section carries the page H1 over Cooley maroon. */
